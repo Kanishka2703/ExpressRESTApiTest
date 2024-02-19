@@ -1,29 +1,31 @@
 const express=require("express")
-// console.log(express)
-// const path=require("path")
 const app=express()//Creating Server
 
-function middleware(req,res,next){
-    console.log("hi this is a middleware")
-    next()
+const members=[{
+    id:1,
+    name:"James",
+    email:"xyz@gmail.com",
+    status:"active"
+},{
+    id:2,
+    name:"Preeti",
+    email:"abc@gmail.com",
+    status:"inactive"
+},{
+    id:3,
+    name:"Aalia",
+    email:"pqr@gmail.com",
+    status:"active"
 }
-app.use(middleware)//run for all 4
-// app.use(express.static(path.join(__dirname,"public")))
-//read
-app.get('/',(req,res)=>{
-    res.send("Hi this is a get request")
+]
+
+app.get("/showAllUser",(req,res)=>{
+    res.status(200).json(members)
 })
-//create
-app.post('/',(req,res)=>{
-    res.send("Hii this is a post request")
-})
-//update
-app.put('/',(req,res)=>{
-    res.send("Hi this is a put request")
-})
-//delete
-app.delete('/',(req,res)=>{
-    res.send("Hii this is a delete request")
+app.get("/showUser/:id",(req,res)=>{
+    const id=req.params.id
+    const user=members.filter(member=>member.id===parseInt(id))
+    user.length!==0 ? res.status(200).json(user) : res.status(200).json({msg:"User not found"})
 })
 const PORT=3000
 app.listen(PORT,()=>console.log(`Server is running on ${PORT}`))
